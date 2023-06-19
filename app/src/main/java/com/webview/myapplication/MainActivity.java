@@ -22,6 +22,8 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.content.pm.PackageManager;
+import androidx.core.content.ContextCompat;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
@@ -54,7 +56,9 @@ public class MainActivity extends Activity {
     @Override
     @SuppressLint("SetJavaScriptEnabled")
     protected void onCreate(Bundle savedInstanceState) {
-        requestStoragePermission();
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            requestStoragePermission();
+        }
         super.onCreate(savedInstanceState);
 
         if (FORCE_PORTRAIT) {
