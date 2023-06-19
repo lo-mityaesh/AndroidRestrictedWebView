@@ -8,7 +8,7 @@ To configure the application and set the allowed website, follow these steps:
 
 1. Open the project in Android Studio.
 2. Navigate to the `MainActivity.java` file.
-3. Locate the line 26 containing the `ALLOWED_URL` constant.
+3. Locate the line 30 containing the `ALLOWED_URL` constant.
 4. Replace the value of the `ALLOWED_URL` constant with the desired URL for the allowed site.
    ```java
    private static final String ALLOWED_URL = "https://www.example.com";
@@ -16,6 +16,21 @@ To configure the application and set the allowed website, follow these steps:
 5. Save the changes.
 
 Make sure to provide a valid URL for the website you want to allow in the application.
+
+## Portrait Mode Configuration
+
+The Android Restricted WebView also allows for the forcing of screen orientation to portrait mode. This is controlled by the `FORCE_PORTRAIT` constant on line 31 in the `MainActivity` class.
+
+To configure this, follow these steps:
+
+1. In the `MainActivity.java` file, locate the line 31 containing the `FORCE_PORTRAIT` constant.
+2. Replace the value of the `FORCE_PORTRAIT` constant to `true` to enforce portrait mode or `false` to allow the system and user preferences to determine the screen orientation.
+   ```java
+   private static final boolean FORCE_PORTRAIT = true; // Change this value to true or false
+   ```
+3. Save the changes.
+
+After modifying this value, you need to recompile and redeploy the application for the change to take effect.
 
 ## Changing the Package Name
 
@@ -38,7 +53,7 @@ Ensure that the new package name follows the proper naming conventions.
 
 ## Usage
 
-After configuring the allowed URL and optionally changing the package name, you can run the application on an Android emulator or device. The application will display the web page of the allowed site within the WebView.
+After configuring the allowed URL, setting the portrait mode preference, and optionally changing the package name, you can run the application on an Android emulator or device. The application will display the web page of the allowed site within the WebView.
 
 If an attempt is made to load a URL other than the allowed site, the application will display an error message "This URL is not allowed" instead of the content.
 
@@ -58,6 +73,8 @@ Please note that I am not a lawyer and the information provided here should not 
 
 ---
 
-Feel free to update the contents of the README file to include any additional sections or information that is relevant to your application.
+Feel free to update the contents of the README file to include any additional
+
+sections or information that is relevant to your application.
 
 If you have any further questions, please let me know!

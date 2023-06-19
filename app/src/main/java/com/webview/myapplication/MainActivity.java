@@ -6,24 +6,32 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.URLUtil;
+import android.webkit.WebChromeClient;
+import android.webkit.WebChromeClient.CustomViewCallback;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.Toast;
+
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends Activity {
-
     private final int STORAGE_PERMISSION_CODE = 1;
+    private static final String ALLOWED_URL = "hadass.site";
+    private static final boolean FORCE_PORTRAIT = true; // True = force portrait mode
     private WebView mWebView;
-    private static final String ALLOWED_URL = "hadass.site"; //Replace the value of the ALLOWED_URL constant with the desired URL for the allowed site.
+    private View mCustomView;
+    private CustomViewCallback mCustomViewCallback;
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -46,10 +54,42 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         requestStoragePermission();
         super.onCreate(savedInstanceState);
+
+        // Force portrait mode if the FORCE_PORTRAIT constant is true
+        if (FORCE_PORTRAIT) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.activity_main);
         mWebView = findViewById(R.id.activity_main_webview);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
+
+        mWebView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                if (mCustomView != null) {
+                    callback.onCustomViewHidden();
+                    return;
+                }
+                mCustomView = view;
+                mWebView.setVisibility(View.GONE);
+                mCustomViewCallback = callback;
+                ((FrameLayout) getWindow().getDecorView()).addView(mCustomView);
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+            }
+
+            @Override
+            public void onHideCustomView() {
+                ((FrameLayout) getWindow().getDecorView()).removeView(mCustomView);
+                mCustomView = null;
+                mWebView.setVisibility(View.VISIBLE);
+                getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+                mCustomViewCallback.onCustomViewHidden();
+                mCustomViewCallback = null;
+            }
+        });
+
         mWebView.setWebViewClient(new HelloWebViewClient());
         mWebView.setDownloadListener((url, userAgent, contentDisposition, mimeType, contentLength) -> {
             Uri source = Uri.parse(url);
@@ -84,7 +124,9 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
+        if (mCustomView != null) {
+            mWebView.getWebChromeClient().onHideCustomView();
+        } else if (mWebView.canGoBack()) {
             mWebView.goBack();
         } else {
             super.onBackPressed();
