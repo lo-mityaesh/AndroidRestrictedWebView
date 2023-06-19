@@ -20,6 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -27,11 +28,12 @@ import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends Activity {
     private final int STORAGE_PERMISSION_CODE = 1;
-    private static final String ALLOWED_URL = "hadass.site"; // Replace with the desired URL
+    private static final String ALLOWED_URL = "hadass.site";  // Replace with the desired URL
     private static final boolean FORCE_PORTRAIT = false; // True = force portrait mode
     private WebView mWebView;
     private View mCustomView;
     private CustomViewCallback mCustomViewCallback;
+    private ProgressBar mProgressBar;
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -55,13 +57,13 @@ public class MainActivity extends Activity {
         requestStoragePermission();
         super.onCreate(savedInstanceState);
 
-        // Force portrait mode if the FORCE_PORTRAIT constant is true
         if (FORCE_PORTRAIT) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
 
         setContentView(R.layout.activity_main);
         mWebView = findViewById(R.id.activity_main_webview);
+        mProgressBar = findViewById(R.id.progressBar);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
@@ -77,8 +79,6 @@ public class MainActivity extends Activity {
                 mCustomViewCallback = callback;
                 ((FrameLayout) getWindow().getDecorView()).addView(mCustomView);
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
-
-                // Allow horizontal orientation in full screen mode
                 setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             }
 
@@ -90,8 +90,6 @@ public class MainActivity extends Activity {
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                 mCustomViewCallback.onCustomViewHidden();
                 mCustomViewCallback = null;
-
-                // Return to forced portrait orientation if FORCE_PORTRAIT is true
                 if (FORCE_PORTRAIT) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 }
@@ -117,9 +115,10 @@ public class MainActivity extends Activity {
         mWebView.loadUrl("https://" + ALLOWED_URL);
     }
 
-    private static class HelloWebViewClient extends WebViewClient {
+    private class HelloWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+            mProgressBar.setVisibility(View.VISIBLE);
             if (Uri.parse(url).getHost().equals(ALLOWED_URL)) {
                 view.loadUrl(url);
                 return true;
@@ -127,6 +126,12 @@ public class MainActivity extends Activity {
                 Toast.makeText(view.getContext(), "This URL is not allowed", Toast.LENGTH_SHORT).show();
                 return true;
             }
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            super.onPageFinished(view, url);
+            mProgressBar.setVisibility(View.GONE);
         }
     }
 
