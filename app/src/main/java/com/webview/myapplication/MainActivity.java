@@ -118,8 +118,8 @@ public class MainActivity extends Activity {
     private class HelloWebViewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
-            mProgressBar.setVisibility(View.VISIBLE);
             if (Uri.parse(url).getHost().equals(ALLOWED_URL)) {
+                mProgressBar.setVisibility(View.VISIBLE);
                 view.loadUrl(url);
                 return true;
             } else {
