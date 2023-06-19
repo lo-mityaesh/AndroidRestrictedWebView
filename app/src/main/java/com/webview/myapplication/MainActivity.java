@@ -28,8 +28,8 @@ import androidx.core.app.ActivityCompat;
 
 public class MainActivity extends Activity {
     private final int STORAGE_PERMISSION_CODE = 1;
-    private static final String ALLOWED_URL = "hadass.site";  // Replace with the desired URL
-    private static final boolean FORCE_PORTRAIT = false; // True = force portrait mode
+    private static final String ALLOWED_URL = "www.anafeam.co.il";  // Replace with the desired URL
+    private static final boolean FORCE_PORTRAIT = true; // True = force portrait mode
     private WebView mWebView;
     private View mCustomView;
     private CustomViewCallback mCustomViewCallback;
