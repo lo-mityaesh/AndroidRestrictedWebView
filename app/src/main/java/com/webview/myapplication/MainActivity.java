@@ -77,6 +77,9 @@ public class MainActivity extends Activity {
                 mCustomViewCallback = callback;
                 ((FrameLayout) getWindow().getDecorView()).addView(mCustomView);
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN);
+
+                // Allow horizontal orientation in full screen mode
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
             }
 
             @Override
@@ -87,6 +90,11 @@ public class MainActivity extends Activity {
                 getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
                 mCustomViewCallback.onCustomViewHidden();
                 mCustomViewCallback = null;
+
+                // Return to forced portrait orientation if FORCE_PORTRAIT is true
+                if (FORCE_PORTRAIT) {
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                }
             }
         });
 
