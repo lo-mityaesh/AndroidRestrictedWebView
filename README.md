@@ -57,11 +57,6 @@ After configuring the allowed URL, setting the portrait mode preference, and opt
 
 If an attempt is made to load a URL other than the allowed site, the application will display an error message "This URL is not allowed" instead of the content.
 
-## Customization
-
-The Android Restricted WebView template can be customized to meet your specific requirements. You can add additional features, modify the application's appearance, or implement additional restrictions on websites.
-
-To further customize the application, explore the project's files and resources, including layout XML files (`activity_main.xml`, `content_main.xml`, etc.) and Java files (`MainActivity.java`, etc.).
 
 ## License
 
