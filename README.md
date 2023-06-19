@@ -11,7 +11,7 @@ To configure the application and set the allowed website, follow these steps:
 3. Locate the line 31 containing the `ALLOWED_URL` constant.
 4. Replace the value of the `ALLOWED_URL` constant with the desired URL for the allowed site.
    ```java
-   private static final String ALLOWED_URL = "https://www.example.com";
+   private static final String ALLOWED_URL = "www.example.com";
    ```
 5. Save the changes.
 
@@ -70,11 +70,3 @@ This application is distributed under the GNU General Public License version 3 (
 ## Disclaimer
 
 Please note that I am not a lawyer and the information provided here should not be considered legal advice. It is important to consult with a qualified legal professional to ensure compliance with all relevant licensing requirements and obligations.
-
----
-
-Feel free to update the contents of the README file to include any additional
-
-sections or information that is relevant to your application.
-
-If you have any further questions, please let me know!
