@@ -23,6 +23,7 @@ public class MainActivity extends Activity {
 
     private final int STORAGE_PERMISSION_CODE = 1;
     private WebView mWebView;
+    private static final String ALLOWED_URL = "hadass.site"; //Replace the value of the ALLOWED_URL constant with the desired URL for the allowed site.
 
     private void requestStoragePermission() {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -65,15 +66,19 @@ public class MainActivity extends Activity {
             dm.enqueue(request);
             Toast.makeText(getApplicationContext(), "Downloading File", Toast.LENGTH_LONG).show();
         });
-        mWebView.loadUrl("https://github.com/satyakami"); //Replace The Link Here
+        mWebView.loadUrl("https://" + ALLOWED_URL);
     }
-    private static class HelloWebViewClient extends WebViewClient
-    {
+
+    private static class HelloWebViewClient extends WebViewClient {
         @Override
-        public boolean shouldOverrideUrlLoading(final WebView view, final String url)
-        {
-            view.loadUrl(url);
-            return true;
+        public boolean shouldOverrideUrlLoading(final WebView view, final String url) {
+            if (Uri.parse(url).getHost().equals(ALLOWED_URL)) {
+                view.loadUrl(url);
+                return true;
+            } else {
+                Toast.makeText(view.getContext(), "This URL is not allowed", Toast.LENGTH_SHORT).show();
+                return true;
+            }
         }
     }
 
@@ -85,5 +90,4 @@ public class MainActivity extends Activity {
             super.onBackPressed();
         }
     }
-
 }

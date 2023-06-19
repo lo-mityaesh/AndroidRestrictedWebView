@@ -6,7 +6,7 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.webview.myapplication"
+        applicationId "com.webview.myapplication" //Change Your package ID here
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -26,6 +26,7 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.webview.myapplication'
 }
 
 dependencies {
