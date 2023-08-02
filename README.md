@@ -65,3 +65,6 @@ This application is distributed under the GNU General Public License version 3 (
 ## Disclaimer
 
 Please note that I am not a lawyer and the information provided here should not be considered legal advice. It is important to consult with a qualified legal professional to ensure compliance with all relevant licensing requirements and obligations.
+
+## Support Me
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J3J6N3QW7)
